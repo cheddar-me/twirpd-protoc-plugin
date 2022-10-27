@@ -4,7 +4,7 @@ description: Protoc compiler plugin to generate Dart code and Twirp clients.
 homepage: https://github.com/cheddar-me/twirpd-protoc-plugin
 
 environment:
-  sdk: '>=2.11.0 <3.0.0'
+  sdk: '>=2.17.0 <3.0.0'
 
 dependencies:
   protoc_plugin: ^20.0.0
