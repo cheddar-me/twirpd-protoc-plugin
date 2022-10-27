@@ -1,4 +1,4 @@
-// @dart=2.11
+// @dart=2.17
 
 import 'package:protoc_plugin/protoc.dart';
 import 'package:protoc_plugin/indenting_writer.dart';
