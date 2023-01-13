@@ -94,7 +94,6 @@ class TwirpFileGenerator extends FileGenerator {
     out.println('//  Generated code. Do not modify.');
     out.println('//  source: ${descriptor.name}');
     out.println('//');
-    out.println('// @dart = 2.12');
     out.println(
         '// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields');
     out.println();
