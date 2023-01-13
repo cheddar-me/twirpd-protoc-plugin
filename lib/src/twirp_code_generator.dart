@@ -1,13 +1,14 @@
-// @dart=2.17
-
-import 'dart:io';
 import 'dart:async';
+import 'dart:io';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:protoc_plugin/protoc.dart';
-import 'package:protoc_plugin/src/dart_options.pb.dart';
-import 'package:protoc_plugin/src/plugin.pb.dart';
+import 'package:protoc_plugin/src/generated/dart_options.pb.dart';
+import 'package:protoc_plugin/src/generated/plugin.pb.dart';
+import 'package:protoc_plugin/src/linker.dart';
+import 'package:protoc_plugin/src/options.dart';
+import 'package:protoc_plugin/src/output_config.dart';
 
 import 'twirp_file_generator.dart';
 
@@ -24,10 +25,9 @@ class TwirpCodeGenerator extends CodeGenerator {
 
   @override
   void generate({
-    Map<String, SingleOptionParser> optionParsers,
-    OutputConfiguration config,
+    Map<String, SingleOptionParser>? optionParsers,
+    OutputConfiguration config = const DefaultOutputConfiguration(),
   }) {
-    config ??= DefaultOutputConfiguration();
     final parsers = {...?optionParsers};
 
     var extensions = ExtensionRegistry();
@@ -35,7 +35,9 @@ class TwirpCodeGenerator extends CodeGenerator {
 
     _streamIn
         .fold(
-            BytesBuilder(), (BytesBuilder builder, data) => builder..add(data))
+          BytesBuilder(),
+          (BytesBuilder builder, data) => builder..add(data),
+        )
         .then((builder) => builder.takeBytes())
         .then((List<int> bytes) {
       var request = CodeGeneratorRequest.fromBuffer(bytes, extensions);
@@ -72,11 +74,11 @@ class TwirpCodeGenerator extends CodeGenerator {
     });
   }
 
-  GenerationOptions _parseGenerationOptions(
+  GenerationOptions? _parseGenerationOptions(
     CodeGeneratorRequest request,
-    CodeGeneratorResponse response,
-    Map<String, SingleOptionParser> optionParsers,
-  ) {
+    CodeGeneratorResponse response, [
+    Map<String, SingleOptionParser>? optionParsers,
+  ]) {
     final metadataParser = GenerateMetadataParser();
     final parsers = {
       ...?optionParsers,

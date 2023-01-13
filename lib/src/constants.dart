@@ -1,5 +1,3 @@
-// @dart=2.11
-
 const coreImportPrefix = r'$core';
 const asyncImportPrefix = r'$async';
 const twirpImportPrefix = r'$twirp';
