@@ -1,8 +1,8 @@
-// @dart=2.11
-
-import 'package:protoc_plugin/protoc.dart';
 import 'package:protoc_plugin/indenting_writer.dart';
-import 'package:protoc_plugin/src/descriptor.pb.dart';
+import 'package:protoc_plugin/protoc.dart';
+import 'package:protoc_plugin/src/generated/descriptor.pb.dart';
+import 'package:protoc_plugin/src/linker.dart';
+
 import 'constants.dart';
 
 class TwirpServiceGenerator {
@@ -23,10 +23,10 @@ class TwirpServiceGenerator {
   final _undefinedDeps = <String, String>{};
 
   /// Fully-qualified Twirp service name.
-  String _fullServiceName;
+  late String _fullServiceName;
 
   /// Dart class name for client stub.
-  String _clientClassname;
+  late String _clientClassname;
 
   /// List of Twirp methods.
   final _methods = <_TwirpMethod>[];
@@ -35,7 +35,7 @@ class TwirpServiceGenerator {
     final name = _descriptor.name;
     final package = fileGen.package;
 
-    if (package != null && package.isNotEmpty) {
+    if (package.isNotEmpty) {
       _fullServiceName = '$package.$name';
     } else {
       _fullServiceName = name;
@@ -64,7 +64,7 @@ class TwirpServiceGenerator {
   void _addDependency(GenerationContext ctx, String fqname, String location) {
     if (_deps.containsKey(fqname)) return; // Already added.
 
-    MessageGenerator mg = ctx.getFieldType(fqname);
+    final mg = ctx.getFieldType(fqname) as MessageGenerator?;
     if (mg == null) {
       _undefinedDeps[fqname] = location;
       return;
