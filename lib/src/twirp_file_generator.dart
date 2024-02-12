@@ -90,7 +90,7 @@ class TwirpFileGenerator extends FileGenerator {
 
   /// Writes the header at the top of the dart file.
   void _writeHeading(IndentingWriter out) {
-    out.println('///');
+    out.println('//');
     out.println('//  Generated code. Do not modify.');
     out.println('//  source: ${descriptor.name}');
     out.println('//');
